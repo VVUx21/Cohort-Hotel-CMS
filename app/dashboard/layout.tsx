@@ -27,16 +27,16 @@ const sidebarItems = [
     href: "/dashboard/content",
     icon: PenTool,
   },
-  {
-    title: "Schedule",
-    href: "/dashboard/schedule/scheduled-posts",
-    icon: Calendar,
-  },
-  {
-    title: "Editor",
-    href: "/dashboard/editor",
-    icon: CreditCard,
-  },
+  // {
+  //   title: "Schedule",
+  //   href: "/dashboard/schedule/scheduled-posts",
+  //   icon: Calendar,
+  // },
+  // {
+  //   title: "Editor",
+  //   href: "/dashboard/editor",
+  //   icon: CreditCard,
+  // },
   {
     title: "Connect",
     href: "/dashboard/social-connect",

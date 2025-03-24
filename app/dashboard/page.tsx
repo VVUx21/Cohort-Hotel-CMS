@@ -81,44 +81,6 @@ export default function DashboardPage() {
             </Button>
           </CardContent>
         </Card>
-
-        {/* <Card className="col-span-1 lg:col-span-2">
-          <CardHeader>
-            <CardTitle className="text-black">Recent Activity</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                {
-                  title: "New post published on Instagram",
-                  time: "2 hours ago",
-                  engagement: "124 likes",
-                },
-                {
-                  title: "Schedule updated for next week",
-                  time: "5 hours ago",
-                  engagement: "12 posts scheduled",
-                },
-                {
-                  title: "Facebook post engagement spike",
-                  time: "1 day ago",
-                  engagement: "324 interactions",
-                },
-              ].map((activity, index) => (
-                <div
-                  key={index}
-                  className="flex items-center justify-between p-4 rounded-lg bg-gray-100"
-                >
-                  <div>
-                    <p className="font-medium text-black">{activity.title}</p>
-                    <p className="text-sm text-gray-700">{activity.time}</p>
-                  </div>
-                  <p className="text-sm font-medium text-black">{activity.engagement}</p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card> */}
       </div>
     </div>
   );
