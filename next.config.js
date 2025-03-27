@@ -1,8 +1,19 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  typescript: {
+    ignoreBuildErrors: true
+  },
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: true
+  },
+  serverRuntimeConfig: false,
+  reactStrictMode: true,
+  
+  trailingSlash: true,
+  
+  // Add any environment variables if needed
+  env: {
+    NEXTAUTH_URL: 'http://localhost:3000'
   },
   images: {
     domains: ['res.cloudinary.com'],

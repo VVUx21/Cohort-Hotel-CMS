@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { ThemeProvider } from "@/components/theme-provider";
+import AuthProvider from '@/components/auth-provider';
 
 export const metadata: Metadata = {
   title: 'Hotel Social CMS',
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
+        <AuthProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
@@ -23,6 +25,7 @@ export default function RootLayout({
           >
             {children}
           </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

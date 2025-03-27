@@ -4,9 +4,9 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { signIn } from 'next-auth/react';
+import { useSession } from "next-auth/react";
 import {
-  Instagram,
-  Facebook,
   Twitter,
   Linkedin,
   RefreshCcw,
@@ -27,29 +27,11 @@ interface SocialPlatform {
 }
 
 export default function SocialConnectPage() {
+  const { data: session } = useSession()
+  console.log(session);
+  const [data, setData] = useState({followers: 0, engagement: "0%"})
+  
   const [platforms, setPlatforms] = useState<SocialPlatform[]>([
-    {
-      id: "instagram",
-      name: "Instagram",
-      icon: <Instagram className="h-5 w-5" />,
-      connected: true,
-      lastSync: "2 hours ago",
-      metrics: {
-        followers: 12500,
-        engagement: "4.2%",
-      },
-    },
-    {
-      id: "facebook",
-      name: "Facebook",
-      icon: <Facebook className="h-5 w-5" />,
-      connected: true,
-      lastSync: "1 hour ago",
-      metrics: {
-        followers: 8300,
-        engagement: "3.8%",
-      },
-    },
     {
       id: "twitter",
       name: "Twitter",
@@ -65,7 +47,12 @@ export default function SocialConnectPage() {
   ]);
 
   const handleConnect = async (platformId: string) => {
-    // Simulate platform connection
+    signIn(
+      platformId,
+      {
+        callbackUrl: "/dashboard/social-connect",
+      }
+    )
     setPlatforms(platforms.map(platform => 
       platform.id === platformId
         ? {
@@ -73,8 +60,8 @@ export default function SocialConnectPage() {
             connected: true,
             lastSync: "Just now",
             metrics: {
-              followers: 0,
-              engagement: "0%",
+              followers: 1000,
+              engagement:"5%"
             },
           }
         : platform
