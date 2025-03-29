@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverActions: true, // ✅ Enable Server Actions
+  },
   typescript: {
     ignoreBuildErrors: true
   },
@@ -10,8 +13,6 @@ const nextConfig = {
   reactStrictMode: true,
   
   trailingSlash: true,
-  
-  // Add any environment variables if needed
   env: {
     NEXTAUTH_URL: 'http://localhost:3000'
   },

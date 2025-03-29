@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -40,7 +40,8 @@ export default function ContentPage() {
     caption?: string;
     hashtags?: string[];
   }>({});
-
+  const [trends, setTrends] = useState<string[]>([]);
+  const [promptValue, setPromptValue] = useState<string>("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -51,13 +52,50 @@ export default function ContentPage() {
     },
   });
 
+  useEffect(() => {
+    async function fetchTrends() {
+      try {
+        const response = await fetch("https://gemini-imagegen.onrender.com/get-trends"); // Replace with actual API
+        const data = await response.json();
+        setTrends(data.trends || []);
+      } catch (error) {
+        console.error("Error fetching trends:", error);
+      }
+    }
+    fetchTrends();
+  }, []);
+
+  const addTrendToPrompt = (trend: string) => {
+    setPromptValue((prev) => (prev ? `${prev}, ${trend}` : trend));
+    form.setValue("prompt", promptValue); // Update form value
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsGenerating(true);
     try {
-      // Simulate AI generation (replace with actual API call)
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const prompt = `You are a caption generator for a hotel social media page. You have to generate a caption based on following keywords: 
+      Style of Hotel: ${values.hotelStyle} 
+      Tone of Content: ${values.tone} 
+      Keywords: ${values.keywords} 
+      User prompt: ${values.prompt}
+      Generate the required text only and no other things within 4 to 5 lines...no options..
+      `;
+      
+      const response = await fetch('https://gemini-imagegen.onrender.com/generate-text', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ prompt }),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
+      }
+      
+      const data = await response.json();
       setGeneratedContent({
-        caption: "Experience luxury redefined at our boutique hotel. Nestled in the heart of the city, every corner tells a story of elegance and comfort. Join us for an unforgettable stay where modern amenities meet timeless charm. ✨🏨",
+        caption: data,
         hashtags: [
           "#LuxuryHotel",
           "#BoutiqueHotel",
@@ -67,10 +105,10 @@ export default function ContentPage() {
           "#LuxuryTravel",
           "#HotelDesign",
           "#TravelGram",
-        ],
+        ]
       });
     } catch (error) {
-      console.error("Error generating content:", error);
+      console.error('Error generating content:', error);
     } finally {
       setIsGenerating(false);
     }
@@ -89,6 +127,7 @@ export default function ContentPage() {
         <TabsList className="bg-white text-black ">
           <TabsTrigger className="bg-white text-black" value="generate">Generate Content</TabsTrigger>
           <TabsTrigger className="bg-white text-black" value="preview">Preview & Edit</TabsTrigger>
+          <TabsTrigger className="bg-white text-black" value="trends">Ongoing Trends</TabsTrigger>
         </TabsList>
 
         <TabsContent value="generate" className="space-y-4">
@@ -169,24 +208,27 @@ export default function ContentPage() {
                 )}
               />
 
-              <FormField
-                control={form.control}
-                name="prompt"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Content Brief</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder="Describe what you want to promote or highlight"
-                        className="min-h-[100px] bg-white text-black"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
+                  <FormField
+                    control={form.control}
+                    name="prompt"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Content Brief</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="Describe what you want to promote or highlight"
+                            className="min-h-[100px] bg-white text-black"
+                            value={promptValue}
+                            onChange={(e) => {
+                              setPromptValue(e.target.value);
+                              field.onChange(e); 
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
               <Button
                 type="submit"
                 className="w-full md:w-auto bg-purple-800 text-white hover:bg-purple-900"
@@ -227,6 +269,18 @@ export default function ContentPage() {
             </Card>
           </div>
         </TabsContent>
+        <TabsContent value="trends">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {trends.map((trend, index) => (
+            <div key={index} className="flex items-center justify-between p-2 border rounded-md bg-gray-100">
+              <span className="text-sm font-medium">{trend}</span>
+              <Button size="sm" onClick={() => addTrendToPrompt(trend)}>
+                Add
+              </Button>
+            </div>
+          ))}
+        </div>
+      </TabsContent>
       </Tabs>
     </div>
   );

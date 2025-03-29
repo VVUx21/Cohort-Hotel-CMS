@@ -12,30 +12,7 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-    const tokenValidationResponse = await fetch('https://api.twitter.com/2/users/me', {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${accessToken}`
-        }
-    });
-
-    if (!tokenValidationResponse.ok) {
-        const errorBody = await tokenValidationResponse.text();
-        console.error('Access Token Validation Error:', errorBody);
-
-        return NextResponse.json(
-            { error: 'Invalid or expired access token', details: errorBody },
-            { status: 401 }
-        );
-    }
     
-    if (text.length > 280) {
-      return NextResponse.json(
-        { error: 'Tweet exceeds 280 character limit' }, 
-        { status: 400 }
-      );
-    }
-
     const response = await fetch('https://api.twitter.com/2/tweets', {
       method: 'POST',
       headers: {

@@ -10,6 +10,7 @@ import {
   CreditCard,
   Send,
   PlusCircle,
+  ImagePlus
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -27,16 +28,16 @@ const sidebarItems = [
     href: "/dashboard/content",
     icon: PenTool,
   },
-  // {
-  //   title: "Schedule",
-  //   href: "/dashboard/schedule/scheduled-posts",
-  //   icon: Calendar,
-  // },
-  // {
-  //   title: "Editor",
-  //   href: "/dashboard/editor",
-  //   icon: CreditCard,
-  // },
+  {
+    title: "Schedule",
+    href: "/dashboard/schedule/scheduled-posts",
+    icon: Calendar,
+  },
+  {
+    title: "Image Generator",
+    href: "/dashboard/image-generator",
+    icon: ImagePlus,
+  },
   {
     title: "Connect",
     href: "/dashboard/social-connect",

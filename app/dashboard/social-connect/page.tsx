@@ -4,8 +4,6 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { signIn } from 'next-auth/react';
-import { useSession } from "next-auth/react";
 import {
   Twitter,
   Linkedin,
@@ -27,10 +25,6 @@ interface SocialPlatform {
 }
 
 export default function SocialConnectPage() {
-  const { data: session } = useSession()
-  console.log(session);
-  const [data, setData] = useState({followers: 0, engagement: "0%"})
-  
   const [platforms, setPlatforms] = useState<SocialPlatform[]>([
     {
       id: "twitter",
@@ -47,12 +41,6 @@ export default function SocialConnectPage() {
   ]);
 
   const handleConnect = async (platformId: string) => {
-    signIn(
-      platformId,
-      {
-        callbackUrl: "/dashboard/social-connect",
-      }
-    )
     setPlatforms(platforms.map(platform => 
       platform.id === platformId
         ? {

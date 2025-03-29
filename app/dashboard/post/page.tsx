@@ -142,25 +142,25 @@ const LinkedInPreview: React.FC<PreviewProps> = ({ caption, imageUrl, link }) =>
 
 const platforms: PlatformPreview[] = [
   {
-    id: "instagram",
+    id: "INSTAGRAM",
     name: "Instagram",
     icon: <Instagram className="h-4 w-4" />,
     component: InstagramPreview,
   },
   {
-    id: "facebook",
+    id: "FACEBOOK",
     name: "Facebook",
     icon: <Facebook className="h-4 w-4" />,
     component: FacebookPreview,
   },
   {
-    id: "twitter",
+    id: "TWITTER",
     name: "Twitter",
     icon: <Twitter className="h-4 w-4" />,
     component: TwitterPreview,
   },
   {
-    id: "linkedin",
+    id: "LINKEDIN",
     name: "LinkedIn",
     icon: <Linkedin className="h-4 w-4" />,
     component: LinkedInPreview,
@@ -202,7 +202,18 @@ export default function PostPage() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log("Scheduling post:", values);
-    // Here you would implement the actual posting logic
+    const formattedData = {
+      ...values,
+      scheduledDate: values.scheduledDate ? format(new Date(values.scheduledDate), "yyyy-MM-dd") : null, // Convert date to string
+    };
+  
+    fetch("/api/schedule-post", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formattedData),
+    });
   };
 
   const PreviewComponent = platforms.find(p => p.id === previewPlatform)?.component || InstagramPreview;
