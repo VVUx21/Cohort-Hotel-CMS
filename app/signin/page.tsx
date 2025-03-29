@@ -1,13 +1,8 @@
-import { auth } from "@/lib/auth";
-import { signIn } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Page = async () => {
-  const session = await auth();
-  if (session) redirect("/");
 
   return (
     <div className="w-full max-w-sm mx-auto space-y-6">
@@ -26,10 +21,10 @@ const Page = async () => {
       {/* Email/Password Sign In */}
       <form
         className="space-y-4"
-        action={async (formData) => {
-          "use server";
-          await signIn("credentials", formData);
-        }}
+        // action={async (formData) => {
+        //   "use server";
+        //   await signIn("credentials", formData);
+        // }}
       >
         <Input
           name="email"

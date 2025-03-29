@@ -21,7 +21,7 @@ const LandingPage = () => {
             <div className="hidden md:flex items-center space-x-8">
               <Link href="#features" className="text-gray-700 hover:text-purple-600 font-medium">Features</Link>
               <Link href="#testimonials" className="text-gray-700 hover:text-purple-600 font-medium">Testimonials</Link>
-              <Link href="#pricing" className="text-gray-700 hover:text-purple-600 font-medium">Pricing</Link>
+              <Link href="/pricing" className="text-gray-700 hover:text-purple-600 font-medium">Pricing</Link>
               <Link href="/dashboard" className="text-gray-700 hover:text-purple-600 font-medium">Dashboard</Link>
               <Button className="bg-purple-600 text-white hover:bg-purple-700">Get Started</Button>
             </div>
