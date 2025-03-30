@@ -32,6 +32,7 @@ const formSchema = z.object({
   tone: z.string(),
   keywords: z.string(),
   prompt: z.string().min(10, "Please provide more context for better results"),
+  language: z.string().optional(), // Added language field
 });
 
 export default function ContentPage() {
@@ -78,8 +79,7 @@ export default function ContentPage() {
       Tone of Content: ${values.tone} 
       Keywords: ${values.keywords} 
       User prompt: ${values.prompt}
-      Generate the required text only and no other things within 4 to 5 lines...no options..
-      `;
+      Generate the required text only and no other things within 4 to 5 lines...no options.. strictly in ${values.language} language `;
       
       const response = await fetch('https://gemini-imagegen.onrender.com/generate-text', {
         method: 'POST',
@@ -200,6 +200,23 @@ export default function ContentPage() {
                         type="text"
                         className="bg-white"
                         placeholder="Enter keywords (e.g., luxury, comfort, view)"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="language"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Choose your Languges</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        className="bg-white"
+                        placeholder="Enter Language (e.g., Hindi, Tamil,Telegu,Kannada)"
                         {...field}
                       />
                     </FormControl>
