@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Hotel, Image, Calendar, Menu, X, Instagram, Twitter, Facebook, Linkedin} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { RegisterDialog } from "@/components/userfrom";
 
 const LandingPage = () => {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -23,7 +24,7 @@ const LandingPage = () => {
               <Link href="#testimonials" className="text-gray-700 hover:text-purple-600 font-medium">Testimonials</Link>
               <Link href="/pricing" className="text-gray-700 hover:text-purple-600 font-medium">Pricing</Link>
               <Link href="/dashboard" className="text-gray-700 hover:text-purple-600 font-medium">Dashboard</Link>
-              <Button className="bg-purple-600 text-white hover:bg-purple-700">Get Started</Button>
+              <RegisterDialog />
             </div>
             
             <div className="md:hidden">

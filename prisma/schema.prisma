@@ -14,8 +14,9 @@ model User {
   name        String
   hasPaid     Boolean  @default(false)
   hotels      Hotel[]
+  role        Role     @default(EMPLOYEE)
+  isAdmin     Boolean  @default(false)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
 }
 
 model Hotel {
@@ -42,6 +43,11 @@ model Post {
   //hotelId     String
   createdAt   DateTime @default(now())
   //hotel       Hotel    @relation(fields: [hotelId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  EMPLOYEE
+  MANAGER
 }
 
 enum PostStatus {

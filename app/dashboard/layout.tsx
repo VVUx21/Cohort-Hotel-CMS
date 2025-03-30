@@ -29,11 +29,6 @@ const sidebarItems = [
     icon: PenTool,
   },
   {
-    title: "Schedule",
-    href: "/dashboard/schedule/scheduled-posts",
-    icon: Calendar,
-  },
-  {
     title: "Image Generator",
     href: "/dashboard/image-generator",
     icon: ImagePlus,

@@ -1,47 +1,66 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+import { z } from "zod";
+import bcrypt from "bcrypt";
 
-const calculateEngagement = (followers: number, mediaCount: number): string => {
-  if (followers === 0 || mediaCount === 0) return "0%";
-  return ((mediaCount / followers) * 100).toFixed(2) + "%";
-};
+const prisma = new PrismaClient();
 
-export async function GET(request: NextRequest) {
-  const searchParams = request.nextUrl.searchParams;
-  const platform = searchParams.get('platform');
+const userSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8),
+  name: z.string().min(2),
+  role: z.enum(["EMPLOYEE", "MANAGER"]).default("EMPLOYEE"),
+});
 
-  if (!platform) {
-    return NextResponse.json({ error: "Platform is required" }, { status: 400 });
-  }
-
+export async function POST(request: Request) {
   try {
-    switch (platform) {
-      case "twitter":
-        const twitterResponse = await fetch(
-          "https://api.twitter.com/2/users/by/username/Bibhuprasa95874", 
-          {
-            method: 'GET',
-            headers: { 
-              'Authorization': `Bearer ${process.env.TWITTER_Bearer_Token}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        const twitterData = await twitterResponse.json();
-        console.log(twitterData);
+    const body = await request.json();
 
-        return NextResponse.json({
-          followers: twitterData});
-
-      default:
-        return NextResponse.json(
-          { error: "Invalid platform specified" }, 
-          { status: 400 }
-        );
+    const validatedData = userSchema.parse(body);
+    
+    const existingUser = await prisma.user.findUnique({
+      where: { email: validatedData.email },
+    });
+    
+    if (existingUser) {
+      return NextResponse.json(
+        { message: "Email already registered" },
+        { status: 400 }
+      );
     }
-  } catch (error) {
-    console.error(`Error fetching ${platform} data:`, error);
+    
+    const hashedPassword = await bcrypt.hash(validatedData.password, 10);
+    
+    const newUser = await prisma.user.create({
+      data: {
+        email: validatedData.email,
+        password: hashedPassword,
+        name: validatedData.name,
+        role: validatedData.role,
+      },
+    });
+
+    const { password, ...userWithoutPassword } = newUser;
     return NextResponse.json(
-      { error: "Failed to fetch data" }, 
+      { 
+        message: "User created successfully", 
+        user: userWithoutPassword,
+        userId: newUser.id
+      },
+      { status: 201 }
+    );
+  } catch (error) {
+    console.error("Registration error:", error);
+    
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { message: "Invalid data", errors: error.errors },
+        { status: 400 }
+      );
+    }
+    
+    return NextResponse.json(
+      { message: "Internal server error" },
       { status: 500 }
     );
   }
