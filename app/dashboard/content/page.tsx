@@ -79,8 +79,7 @@ export default function ContentPage() {
       Tone of Content: ${values.tone} 
       Keywords: ${values.keywords} 
       User prompt: ${values.prompt}
-      Generate the required text only and no other things within 4 to 5 lines...no options..
-      `;
+      Generate the required text only and no other things within 4 to 5 lines...no options.. strictly in ${values.language} language `;
       
       const response = await fetch('https://gemini-imagegen.onrender.com/generate-text', {
         method: 'POST',
