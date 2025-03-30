@@ -32,7 +32,7 @@ const formSchema = z.object({
   tone: z.string(),
   keywords: z.string(),
   prompt: z.string().min(10, "Please provide more context for better results"),
-  language: z.string().optional(),
+  language: z.string().optional(), // Added language field
 });
 
 export default function ContentPage() {
@@ -79,7 +79,7 @@ export default function ContentPage() {
       Tone of Content: ${values.tone} 
       Keywords: ${values.keywords} 
       User prompt: ${values.prompt}
-     Generate the required text only and no other things within 4 to 5 lines...no options.. strictly in ${values.language} language 
+      Generate the required text only and no other things within 4 to 5 lines...no options..
       `;
       
       const response = await fetch('https://gemini-imagegen.onrender.com/generate-text', {
