@@ -318,7 +318,7 @@ export default function AIImageGenerator() {
                 </Button>
 
                 {/* Premium features - Only visible if user has paid */}
-                {user && user.hasPaid && (
+                {(
                   <>
                     <Button variant="outline" onClick={() => window.location.href = "https://image-editor-blush-nine.vercel.app/"}>
                       Edit Image

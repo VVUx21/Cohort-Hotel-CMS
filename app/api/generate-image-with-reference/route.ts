@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import * as fs from 'fs';
 import * as os from 'os';
 
+export const runtime = "nodejs";
+
 export async function POST(request: NextRequest) {
   try {
     const contentType = request.headers.get('content-type') || '';
@@ -78,7 +80,6 @@ export async function POST(request: NextRequest) {
         image: data.image 
       });
     } finally {
-    
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);
       }
@@ -91,9 +92,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
